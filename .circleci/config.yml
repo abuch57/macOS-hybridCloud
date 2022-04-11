@@ -1,6 +1,36 @@
+# setup workflows ##
 version: 2.1
 
+# denotes that it is setup workflow
+setup: true
+
 jobs:
+  check_queue_depth:
+    docker:
+      - image: cimg/base:2022.03
+    steps:
+      - run:
+          command: |
+            if [ -z "${RUNNER_API_TOKEN	}" ]; then
+              echo "RUNNER_API_TOKEN is required. Make sure this is defined in Project Settings."
+              exit 1
+            fi
+            
+            if ! which curl > /dev/null; then
+               echo "curl is required to use this command"
+               exit 1
+            fi
+            
+            HTTP_RESPONSE=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -X GET https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro \-H 'Circle-Token: ${RUNNER_API_TOKEN')
+            
+            HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
+            
+            echo "$HTTP_BODY"
+            
+            
+            
+            
+
   test_runner:
     machine: true
     resource_class: test_runner/m1Pro
@@ -10,4 +40,4 @@ jobs:
 workflows:
    main:
     jobs:
-      - test_runner
+      - check_queue_depth
