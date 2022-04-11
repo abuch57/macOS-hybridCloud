@@ -23,6 +23,11 @@ jobs:
                echo "curl is required to use this command"
                exit 1
             fi
+            
+            if ! which jq > /dev/null; then
+               echo "jq is required to use this command"
+               exit 1
+            fi
                      
             HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" --write-out "HTTPSTATUS:%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro")         
             
