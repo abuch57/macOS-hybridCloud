@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   test_runner:
     machine: true
-    resource_class: test_runner/mymac
+    resource_class: test_runner/m1Pro
     steps:
       - run: echo "Hi I'm on Runners!"
 
