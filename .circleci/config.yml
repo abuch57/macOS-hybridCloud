@@ -11,7 +11,7 @@ jobs:
     steps:
       - run:
           command: |
-            if [ -z "${RUNNER_API_TOKEN	}" ]; then
+            if [ -z "${RUNNER_API_TOKEN}" ]; then
               echo "RUNNER_API_TOKEN is required. Make sure this is defined in Project Settings."
               exit 1
             fi
