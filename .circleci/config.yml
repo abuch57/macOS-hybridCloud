@@ -25,6 +25,7 @@ jobs:
             
             HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
             
+            echo "$HTTP_RESPONSE"
             echo "$HTTP_BODY"
             
             
