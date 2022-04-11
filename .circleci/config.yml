@@ -1,0 +1,13 @@
+version: 2.1
+
+jobs:
+  test_runner:
+    machine: true
+    resource_class: test_runner/mymac
+    steps:
+      - run: echo "Hi I'm on Runners!"
+
+workflows:
+   main:
+    jobs:
+      - test_runner
