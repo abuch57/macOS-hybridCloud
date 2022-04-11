@@ -20,9 +20,11 @@ jobs:
                echo "curl is required to use this command"
                exit 1
             fi
+                     
+            HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" --write-out "HTTPSTATUS:%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro")         
             
-            HTTP_RESPONSE=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -X GET https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro \
-              -H 'Circle-Token: "${RUNNER_API_TOKEN}"')
+#            HTTP_RESPONSE=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -X GET https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro
+#              -H 'Circle-Token: "${RUNNER_API_TOKEN}"')
             
             HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
             
