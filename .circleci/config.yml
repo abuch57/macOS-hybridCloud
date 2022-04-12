@@ -31,7 +31,7 @@ jobs:
                      
             HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" -w "\n%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro")         
             
-            HTTP_BODY=$(echo $HTTP_RESPONSE | head -n-1)
+            HTTP_BODY=$(echo $HTTP_RESPONSE | head -n-1 sed \$d)
             HTTP_STATUS=$(echo $HTTP_RESPONSE | tail -n1)
                         
             if [ $HTTP_STATUS != "200" ]; then
