@@ -33,6 +33,13 @@ jobs:
             
             HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
             
+            if [ $http_response != "200" ]; then
+              echo "ERROR: Server returned error code: $http_response"
+              exit 1
+            else
+              echo "DEBUG: API Success"
+            fi
+            
             echo "$HTTP_RESPONSE"
             echo "$HTTP_BODY"
             
