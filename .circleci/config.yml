@@ -34,7 +34,7 @@ jobs:
             HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
             
             if [ $HTTP_RESPONSE != "200" ]; then
-              echo "ERROR: Server returned error code: $http_response"
+              echo "ERROR: Server returned error code: $HTTP_RESPONSE"
               exit 1
             else
               echo "DEBUG: API Success"
