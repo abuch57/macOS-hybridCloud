@@ -33,7 +33,7 @@ jobs:
             
             HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
             
-            if [ $http_response != "200" ]; then
+            if [ $HTTP_RESPONSE != "200" ]; then
               echo "ERROR: Server returned error code: $http_response"
               exit 1
             else
