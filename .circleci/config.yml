@@ -29,9 +29,11 @@ jobs:
                exit 1
             fi
                      
-            HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" --write-out "HTTPSTATUS:%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro")         
+            HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" -w "%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro")         
             
             HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
+            
+            HTTP_STATUS=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g'
             
             if [ $HTTP_RESPONSE != "200" ]; then
               echo "ERROR: Server returned error code: $HTTP_RESPONSE"
