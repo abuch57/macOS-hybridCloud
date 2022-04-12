@@ -35,8 +35,8 @@ jobs:
             
             HTTP_STATUS=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
             
-            if [ $HTTP_RESPONSE != "200" ]; then
-              echo "ERROR: Server returned error code: $HTTP_RESPONSE"
+            if [ $HTTP_STATUS != "200" ]; then
+              echo "ERROR: Server returned error code: $HTTP_STATUS"
               exit 1
             else
               echo "DEBUG: API Success"
