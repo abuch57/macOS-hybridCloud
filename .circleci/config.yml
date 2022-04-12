@@ -34,7 +34,7 @@ jobs:
             HTTP_BODY=$(echo $HTTP_RESPONSE | head -n-1)
             HTTP_STATUS=$(echo $HTTP_RESPONSE | tail -n1)
                         
-            if [ $HTTP_STATUS != "200" ]; then
+            if [ "$HTTP_STATUS" != "200" ]; then
               echo "ERROR: Server returned error code: $HTTP_STATUS"
               exit 1
             else
