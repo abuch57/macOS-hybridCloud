@@ -15,6 +15,7 @@ jobs:
     docker:
       - image: cimg/base:2022.03
     steps:
+      - checkout
       - run:
           command: |
             if [ -z "${RUNNER_API_TOKEN}" ]; then
