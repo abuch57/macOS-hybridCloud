@@ -1,0 +1,32 @@
+version: 2.1
+
+parameters:
+  use_runner:
+    type: boolean
+    default: true
+
+workflows:
+  runner:
+    when:
+      condition: << pipeline.parameters.use_runner >>
+    jobs:
+      - runner
+
+  cloud:
+    when:
+      condition:
+        not: << pipeline.parameters.use_runner >>
+    jobs:
+      - cloud
+
+jobs:
+  test_runner:
+    machine: true
+    resource_class: test_runner/m1Pro
+    steps:
+      - run: echo "Hi I'm on Runners!"
+
+  test_cloud:
+    executor: python/default
+    steps:
+      - run: echo "Hi I'm on Cloud!"
