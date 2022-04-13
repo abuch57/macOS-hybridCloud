@@ -36,11 +36,6 @@ jobs:
               echo "CIRCLE_CONTINUATION_KEY is required. Make sure setup workflows are enabled."
               exit 1
             fi
-
-            if [ -z "${CONFIG_PATH}" ]; then
-              echo "CONFIG_PATH is required."
-              exit 1
-            fi
                      
             HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" --write-out "HTTPSTATUS:%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro")         
             
