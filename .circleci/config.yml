@@ -65,7 +65,7 @@ jobs:
             
             PARAMS=$(jq --null-input \
               --arg use_runner "$USE_RUNNER" \
-              '{"use_runner": $USE_RUNNER}')
+              '{"use_runner": $runner}')
           
                      
                      
