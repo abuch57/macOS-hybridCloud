@@ -62,7 +62,7 @@ jobs:
                      
             USE_RUNNER=true         
             
-            if [ $UNCLAIMED_TASK_COUNT -gt <<parameters.runner_threshold>> ];then
+            if [ $UNCLAIMED_TASK_COUNT -gt << pipeline.parameters.runner_threshold >> ];then
               USE_RUNNER=false
             fi
             
