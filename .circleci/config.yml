@@ -95,7 +95,7 @@ jobs:
             cat /tmp/circleci/continue_post.json
 
 
-            [ [ $(curl \
+            [[ $(curl \
                   -o /dev/stderr \
                   -w '%{ http_code }' \
                     -XPOST \
