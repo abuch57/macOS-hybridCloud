@@ -55,7 +55,9 @@ jobs:
             
             echo "$UNCLAIMED_TASK_COUNT"
                      
-            USE_RUNNER=true         
+            USE_RUNNER=true
+            
+            echo "$USE_RUNNER"
             
             if [ $UNCLAIMED_TASK_COUNT -gt << pipeline.parameters.runner_threshold >> ];then
               USE_RUNNER=false
