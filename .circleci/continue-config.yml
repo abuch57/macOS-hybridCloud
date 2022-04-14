@@ -10,7 +10,7 @@ workflows:
     when:
       condition: << pipeline.parameters.use_runner >>
     jobs:
-      - runner
+      - test_runner
 
   cloud:
     when:
