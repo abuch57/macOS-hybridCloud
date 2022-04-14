@@ -27,6 +27,7 @@ jobs:
       - run: echo "Hi I'm on Runners!"
 
   test_cloud:
-    executor: cimg/base:current
+    docker:
+      - image: cimg/base:current
     steps:
       - run: echo "Hi I'm on Cloud!"
