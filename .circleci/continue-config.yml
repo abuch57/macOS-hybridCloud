@@ -13,9 +13,9 @@ workflows:
       - test_runner
 
   cloud:
-    when:
-      condition:
-        not: << pipeline.parameters.use_runner >>
+#    when:
+#      condition:
+#        not: << pipeline.parameters.use_runner >>
     jobs:
       - test_cloud
 
