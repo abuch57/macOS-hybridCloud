@@ -17,7 +17,7 @@ workflows:
       condition:
         not: << pipeline.parameters.use_runner >>
     jobs:
-      - cloud
+      - test_cloud
 
 jobs:
   test_runner:
