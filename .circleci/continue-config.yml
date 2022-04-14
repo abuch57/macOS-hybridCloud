@@ -27,6 +27,6 @@ jobs:
       - run: echo "Hi I'm on Runners!"
 
   test_cloud:
-    executor: python/default
+    executor: cimg/base:current
     steps:
       - run: echo "Hi I'm on Cloud!"
