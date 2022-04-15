@@ -3,19 +3,16 @@ version: 2.1
 parameters:
   use_runner:
     type: boolean
-    default: true
+    default: false
 
 workflows:
   runner:
-    when:
-      condition: << pipeline.parameters.use_runner >>
+    when: << pipeline.parameters.use_runner >>
     jobs:
       - test_runner
 
   cloud:
-#    when:
-#      condition:
-#        not: << pipeline.parameters.use_runner >>
+    unless: << pipeline.parameters.use_runner >>
     jobs:
       - test_cloud
 
