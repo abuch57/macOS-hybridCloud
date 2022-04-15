@@ -97,7 +97,7 @@ jobs:
 
             [[ $(curl \
                   -o /dev/stderr \
-                  -w "HTTPSTATUS:%{http_code}" \
+                  -w '%{ http_code }' \
                     -XPOST \
                     -H "Content-Type: application/json" \
                     -H "Accept: application/json"  \
