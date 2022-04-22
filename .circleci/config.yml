@@ -65,9 +65,9 @@ jobs:
                         
             if [ $UNCLAIMED_TASK_COUNT -gt << pipeline.parameters.runner_threshold >> ];then
               USE_RUNNER=false
-              echo "Using Runner: $use_runner"
+              echo "Using Runner: $USE_RUNNER"
             else
-              echo "Using Runner: $use_runner"
+              echo "Using Runner: $USE_RUNNER"
             fi
             
             PARAMS=$(jq --null-input \
