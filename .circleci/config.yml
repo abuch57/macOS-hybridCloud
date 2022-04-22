@@ -17,6 +17,7 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Checking queue depth API
           command: |
             if [ -z "${RUNNER_API_TOKEN}" ]; then
               echo "RUNNER_API_TOKEN is required. Make sure this is defined in Project Settings."
