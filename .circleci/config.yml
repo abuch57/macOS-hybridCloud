@@ -55,9 +55,6 @@ jobs:
               echo "DEBUG: API Success"
             fi
             
-            echo "$HTTP_RESPONSE"
-            echo "$HTTP_BODY"
-            
             UNCLAIMED_TASK_COUNT=$(echo $HTTP_BODY | jq ".unclaimed_task_count")
             
             echo "$UNCLAIMED_TASK_COUNT"
