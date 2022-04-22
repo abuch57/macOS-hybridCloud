@@ -1,0 +1,31 @@
+version: 2.1
+
+parameters:
+  use_runner:
+    type: boolean
+    default: false
+
+workflows:
+  runner:
+    when: << pipeline.parameters.use_runner >>
+    jobs:
+      - test_runner
+
+  cloud:
+    unless: << pipeline.parameters.use_runner >>
+    jobs:
+      - test_cloud
+
+jobs:
+  test_runner:
+    machine: true
+    resource_class: test_runner/m1Pro
+    steps:
+      - run: echo "Hi I'm on Runners!"
+
+  test_cloud:
+    macos:
+      xcode: 10.3.0
+      resource_class: macos.x86.medium.gen2
+    steps:
+      - run: echo "Hi I'm on Cloud!"

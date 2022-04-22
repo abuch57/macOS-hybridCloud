@@ -1,13 +1,116 @@
+# setup workflows ##
 version: 2.1
 
+# denotes that it is setup workflow
+setup: true
+
+parameters:
+  runner_threshold:
+    type: string
+    default: '2'
+    description: The amount of queued jobs until moving to cloud resources
+
 jobs:
-  test_runner:
-    machine: true
-    resource_class: test_runner/mymac
+  check_queue_depth:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
     steps:
-      - run: echo "Hi I'm on Runners!"
+      - checkout
+      - run:
+          name: Checking queue depth API
+          command: |
+            if [ -z "${RUNNER_API_TOKEN}" ]; then
+              echo "RUNNER_API_TOKEN is required. Make sure this is defined in Project Settings."
+              exit 1
+            fi
+            
+            if [ -z "${RESOURCE_CLASS}" ]; then
+              echo "Runner RESOURCE_CLASS is required as a path param. Make sure this is defined in Project Settings."
+              exit 1
+            fi
+            
+            if ! which curl > /dev/null; then
+               echo "curl is required to use this command"
+               exit 1
+            fi
+            
+            if ! which jq > /dev/null; then
+               echo "jq is required to use this command"
+               exit 1
+            fi
+            
+            if [ -z "${CIRCLE_CONTINUATION_KEY}" ]; then
+              echo "CIRCLE_CONTINUATION_KEY is required. Make sure setup workflows are enabled."
+              exit 1
+            fi
+                     
+            HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" --write-out "HTTPSTATUS:%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=${RESOURCE_CLASS}")         
+            
+            HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
+            
+            if ([ $http_response != "200" ]) 2> /dev/null 
+            then
+              echo "ERROR: Server returned error code: $http_response"
+              exit 1
+            else
+              echo "DEBUG: API Success"
+            fi
+            
+            
+            UNCLAIMED_TASK_COUNT=$(echo $HTTP_BODY | jq ".unclaimed_task_count")
+            
+                     
+            USE_RUNNER=true
+                        
+            if [ $UNCLAIMED_TASK_COUNT -gt << pipeline.parameters.runner_threshold >> ];then
+              USE_RUNNER=false
+              echo "Using Runner: $USE_RUNNER"
+            else
+              echo "Using Runner: $USE_RUNNER"
+            fi
+            
+            PARAMS=$(jq --null-input \
+              --argjson use_runner "$USE_RUNNER" \
+              '{"use_runner": $use_runner}')
+          
+                           
+            if ! jq . >/dev/null 2>&1 \<<<"$PARAMS"; then
+              echo "PARAMETERS aren't valid json"
+              exit 1
+            fi
+                     
+                     
+            mkdir -p /tmp/circleci
+                     
+            rm -rf /tmp/circleci/continue_post.json
+            
+            
+            # Escape the config as a JSON string.
+                     
+            jq -Rs '.' ".circleci/continue-config.yml" > /tmp/circleci/config-string.json
+                     
+                     
+            jq -n \
+                --arg continuation "$CIRCLE_CONTINUATION_KEY" \
+                --arg params "$PARAMS" \
+                --slurpfile config /tmp/circleci/config-string.json \
+                '{"continuation-key": $continuation, "configuration": $config|join("\n"), "parameters": $params|fromjson}' > /tmp/circleci/continue_post.json
+
+            cat /tmp/circleci/continue_post.json
+
+
+            [[ $(curl \
+                  -o /dev/stderr \
+                  -w '%{http_code}' \
+                    -XPOST \
+                    -H "Content-Type: application/json" \
+                    -H "Accept: application/json"  \
+                    --data @/tmp/circleci/continue_post.json \
+                    "https://circleci.com/api/v2/pipeline/continue") \
+               -eq 200 ]]
 
 workflows:
    main:
     jobs:
-      - test_runner
+      - check_queue_depth
