@@ -23,6 +23,11 @@ jobs:
               exit 1
             fi
             
+            if [ -z "${RESOURCE_CLASS}" ]; then
+              echo "Runner RESOURCE_CLASS is required as a path param. Make sure this is defined in Project Settings."
+              exit 1
+            fi
+            
             if ! which curl > /dev/null; then
                echo "curl is required to use this command"
                exit 1
@@ -38,7 +43,7 @@ jobs:
               exit 1
             fi
                      
-            HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" --write-out "HTTPSTATUS:%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=test_runner/m1Pro")         
+            HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" --write-out "HTTPSTATUS:%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=${RESOURCE_CLASS}")         
             
             HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
             
@@ -104,13 +109,6 @@ jobs:
                     --data @/tmp/circleci/continue_post.json \
                     "https://circleci.com/api/v2/pipeline/continue") \
                -eq 200 ]]
-
-            
-            
-            
-            
-
-
 
 workflows:
    main:
