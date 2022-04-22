@@ -60,7 +60,6 @@ jobs:
             
             UNCLAIMED_TASK_COUNT=$(echo $HTTP_BODY | jq ".unclaimed_task_count")
             
-            echo "$UNCLAIMED_TASK_COUNT"
                      
             USE_RUNNER=true
             
@@ -68,14 +67,16 @@ jobs:
             
             if [ $UNCLAIMED_TASK_COUNT -gt << pipeline.parameters.runner_threshold >> ];then
               USE_RUNNER=false
+              "Using Runner: $use_runner"
+            else
+              echo "Using Runner: $use_runner"
             fi
             
             PARAMS=$(jq --null-input \
               --argjson use_runner "$USE_RUNNER" \
               '{"use_runner": $use_runner}')
           
-                     
-                     
+                           
             if ! jq . >/dev/null 2>&1 \<<<"$PARAMS"; then
               echo "PARAMETERS aren't valid json"
               exit 1
