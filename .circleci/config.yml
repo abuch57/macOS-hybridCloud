@@ -46,7 +46,7 @@ jobs:
                      
             HTTP_RESPONSE=$(curl -f -s -X GET -H "Circle-Token:${RUNNER_API_TOKEN}" --write-out "HTTPSTATUS:%{http_code}" "https://runner.circleci.com/api/v2/tasks?resource-class=${RESOURCE_CLASS}")         
             
-            HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
+            HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed -e 's/HTTPSTATUS\:.*//g')
             
             if [ $http_response != "200" ]; then
               echo "ERROR: Server returned error code: $http_response"
