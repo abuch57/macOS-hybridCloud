@@ -55,6 +55,7 @@ jobs:
             else
               echo "DEBUG: API Success"
             fi
+            2> /dev/null
             
             UNCLAIMED_TASK_COUNT=$(echo $HTTP_BODY | jq ".unclaimed_task_count")
             
